@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Team Block Party Sprint Goal Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="stylesheet.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="print-stylesheet.css" type="text/css" media="print" charset="utf-8" />
+
+    <link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+  </head>
+
+  <body>
+    <div id="sprintGoalApp">
+      <section class="section">
+        <div class="container">
+          <div class="box" id="sprintGoalLabel">
+            <div class="sprintGoalTextHolder">
+              <span id="sprintGoalText">
+                {{ sprintGoalUpper }}
+              </span>  
+            </div>
+          </div>
+
+          <div class="box" id="selector">
+            <input class="input" type="text" placeholder="Sprint Goal" v-model="sprintGoal">
+
+            <br/>
+            <br/>
+
+            <button class="button is-blue" @click="changeLegoColour('blue')">Blue</button>
+            <button class="button is-purple" @click="changeLegoColour('purple')">Purple</button>
+            <button class="button is-red" @click="changeLegoColour('red')">Red</button>
+            <button class="button is-orange" @click="changeLegoColour('orange')">Orange</button>
+            <button class="button is-green" @click="changeLegoColour('green')">Green</button>
+            <button class="button is-lightblue" @click="changeLegoColour('lightblue')">Light Blue</button>
+            <button class="button is-yellow" @click="changeLegoColour('yellow')">Yellow</button>
+
+            <br/>
+            <br/>
+
+            <button class="button is-black" @click="changeFontSize(50)">50px</button>
+            <button class="button is-black" @click="changeFontSize(55)">55px</button>
+            <button class="button is-black" @click="changeFontSize(60)">60px</button>
+            <button class="button is-black" @click="changeFontSize(65)">65px</button>
+            <button class="button is-black" @click="changeFontSize(75)">75px</button>
+
+            <br/>
+            <br/>
+
+            <button class="button is-rounded is-success" @click="addSprintGoal()">
+              <span class="icon">
+                <i class="fa fa-plus"></i>
+              </span>
+              <span>Add</span>
+            </button>
+
+            <button class="button is-rounded is-primary" @click="printSprintGoals()" :disabled="sprintGoals.length < 1">
+              <span class="icon">
+                <i class="fa fa-print"></i>
+              </span>
+              <span>Print</span>
+            </button>
+
+            <br/>
+            <br/>
+
+            <ul style="display: inline">
+              <li style="display: inline; margin-right: 5px;" v-for="(sprintGoal, index) in sprintGoals">
+                <button :class="'button is-rounded is-' + sprintGoal.sprintGoalColour">
+                  <span class="icon">
+                    <a class="delete" @click="removeSprintGoal(index)"></a>
+                  </span>
+                  <span>{{ sprintGoal.sprintGoal }}</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="toPrint" id="toPrint">
+          <div class="box" id="sprintGoalLabel" v-for="(sprintGoal, index) in sprintGoals" 
+          :style="{ backgroundImage: 'url(' + sprintGoal.sprintGoalColour + '.jpg)', fontSize: sprintGoal.sprintGoalFontSize }">
+            <div class="sprintGoalTextHolder">
+              <span id="sprintGoalText">
+                {{ sprintGoal.sprintGoal }}
+              </span> 
+            </div> 
+          </div>
+      </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#sprintGoalApp',
+
+            data: { 
+              sprintGoal: 'TEAM BLOCK PARTY!',
+              sprintGoalColour: 'blue',
+              sprintGoalFontSize: '75px',
+              sprintGoals: []
+            },
+
+            computed: {
+              sprintGoalUpper: function () {
+                return this.sprintGoal.toUpperCase();
+              }
+            },
+            
+            methods: {
+              changeFontSize(size){
+                this.sprintGoalFontSize = size + "px";
+                document.getElementById("sprintGoalLabel").style.fontSize = size + "px";
+              },
+
+              changeLegoColour(colour){
+                this.sprintGoalColour = colour;
+                document.getElementById("sprintGoalLabel").style.backgroundImage = "url(" + colour + ".jpg)";
+              },
+
+              addSprintGoal(){
+                var self = this;
+
+                var toAdd = {
+                  sprintGoal: self.sprintGoalUpper,
+                  sprintGoalColour: self.sprintGoalColour,
+                  sprintGoalFontSize: self.sprintGoalFontSize
+                };
+
+                this.sprintGoals.push(toAdd);
+              },
+
+              removeSprintGoal(index){
+                this.sprintGoals.splice(index, 1);
+              },
+
+              printSprintGoals(){
+                window.print();
+              }
+            }
+        })
+    </script>
+
+  </body>
+
+  <footer class="footer">
+    <div class="content has-text-centered">
+      <p>
+          Made with <i class="fa fa-heart" style="color: red"></i> 
+          for Team Block Party by <a href="http://karam.io">Karam</a>
+      </p>
+    </div>
+  </footer>
+</html>

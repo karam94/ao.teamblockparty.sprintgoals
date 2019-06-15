@@ -1,0 +1,14 @@
+@page { size: portrait; }
+
+body { background-color: white; }
+
+.section { display: none; }
+
+.toPrint { padding: 20px; }
+
+#sprintGoalLabel {
+  outline-offset: 10px;
+  outline: 1px gray dashed;
+}
+
+.footer { display: none; }
