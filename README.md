@@ -24,3 +24,4 @@ One morning, I finally got sick and tired of hearing another member of the team 
 - Enjoy!
 
 # Demo:
+![Demo](https://raw.githubusercontent.com/karam94/ao.teamblockparty.sprintgoals/master/demo.gif "Demo")
